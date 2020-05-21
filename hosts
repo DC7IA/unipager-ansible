@@ -1,0 +1,7 @@
+[pocsag]
+192.0.2.42
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=username
+ansible_become=true

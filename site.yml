@@ -1,0 +1,7 @@
+---
+- name: Install unipager POCSAG software
+  hosts: pocsag
+  remote_user: root
+
+  roles:
+    - pocsag

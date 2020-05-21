@@ -1,0 +1,38 @@
+---
+
+#- name: include variables (so that api keys don't get pushed to git :D)
+#  include_vars#:
+   # ifile: ../../../../ansible-private/api-key-pocsag
+ # make sure this is a file containing the API key in a variable like this: pocsag_api_key: "api key"
+ # also define the callsign like this: pocsag_callsign: "dc7ia"
+
+- name: Copy config file for unipager
+  template:
+   src: ../templates/config.json.j2
+   dest: /var/lib/unipager/config.json
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: Repo unipager
+  apt_repository:
+   repo: deb http://www.afu.rwth-aachen.de/debian unipager main
+   state: present
+
+- name: Repo unipager (source)
+  apt_repository:
+   repo: deb-src http://www.afu.rwth-aachen.de/debian unipager main
+   state: present
+
+- name: Add key for the repos
+  apt_key:
+   url: https://www.afu.rwth-aachen.de/debian/rwth-afu.key
+   state: present
+
+- name: Update apt cache
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+- name: Install unipager
+  apt:
+   name: unipager
+   state: present
