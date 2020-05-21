@@ -1,8 +1,8 @@
---- Install unipager using ansible ---
+### Install unipager using ansible ###
 
 Unipager is an amateur radio software for sending messages using POCSAG.
 
------ Usage ----
+#### Usage ####
 
 Define what Host in the file 'hosts'. Fill in the IP address / hostname and the username.
 
