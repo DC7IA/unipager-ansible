@@ -1,12 +1,6 @@
 ---
 
-#- name: include variables (so that api keys don't get pushed to git :D)
-#  include_vars#:
-   # ifile: ../../../../ansible-private/api-key-pocsag
- # make sure this is a file containing the API key in a variable like this: pocsag_api_key: "api key"
- # also define the callsign like this: pocsag_callsign: "dc7ia"
-
-- name: Copy config file for unipager
+- name: Template config file for unipager
   template:
    src: ../templates/config.json.j2
    dest: /var/lib/unipager/config.json
