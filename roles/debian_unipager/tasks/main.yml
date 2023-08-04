@@ -1,0 +1,42 @@
+---
+
+- name: Add key for the repos
+  ansible.builtin.apt_key:
+   url: https://www.afu.rwth-aachen.de/debian/rwth-afu.key
+   state: present
+
+- name: Add Repo for unipager
+  ansible.builtin.apt_repository:
+   repo: deb http://www.afu.rwth-aachen.de/debian unipager main
+   state: present
+
+- name: Add Repo for unipager (source)
+  ansible.builtin.apt_repository:
+   repo: deb-src http://www.afu.rwth-aachen.de/debian unipager main
+   state: present
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install unipager
+  ansible.builtin.apt:
+   name: unipager
+   state: present
+   
+- name: Ensure config directory for unipager exists
+  ansible.builtin.file:
+    path: /var/lib/unipager
+    state: directory
+    recurse: true
+  notify: restart-unipager
+
+- name: Template config file for unipager
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: /var/lib/unipager/config.json
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart-unipager

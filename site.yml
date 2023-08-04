@@ -1,7 +1,7 @@
 ---
 - name: Install unipager POCSAG software
-  hosts: pocsag
+  hosts: unipager_host
   remote_user: root
 
   roles:
-    - pocsag
+    - debian_unipager

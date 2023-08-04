@@ -1,4 +1,4 @@
-[pocsag]
+[unipager_host]
 192.0.2.42
 
 [all:vars]
