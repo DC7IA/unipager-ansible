@@ -1,38 +1,40 @@
 ---
 
-- name: Add key for the repos
+- name: Add Unipager Repo Key
   ansible.builtin.apt_key:
-   url: https://www.afu.rwth-aachen.de/debian/rwth-afu.key
+    id: 5478249EED007EFC0FA28F4E275E586934BE1547
+    data: "{{ lookup('ansible.builtin.file', 'rwth-afu.key') }}"
+    state: present
+    keyring: /usr/share/keyrings/unipager.gpg
+
+- name: Add Repo for Unipager
+  ansible.builtin.apt_repository:
+   repo: deb [signed-by=/usr/share/keyrings/unipager.gpg] http://www.afu.rwth-aachen.de/debian unipager main
    state: present
 
-- name: Add Repo for unipager
-  ansible.builtin.apt_repository:
-   repo: deb http://www.afu.rwth-aachen.de/debian unipager main
-   state: present
-
-- name: Add Repo for unipager (source)
-  ansible.builtin.apt_repository:
-   repo: deb-src http://www.afu.rwth-aachen.de/debian unipager main
-   state: present
+#- name: Add Repo for unipager (source)
+#  ansible.builtin.apt_repository:
+#   repo: deb-src [signed-by=/usr/share/keyrings/unipager.gpg] http://www.afu.rwth-aachen.de/debian unipager main
+#   state: present
 
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
 
-- name: Install unipager
+- name: Install Unipager
   ansible.builtin.apt:
    name: unipager
    state: present
    
-- name: Ensure config directory for unipager exists
+- name: Ensure config directory for Unipager exists
   ansible.builtin.file:
     path: /var/lib/unipager
     state: directory
     recurse: true
   notify: restart-unipager
 
-- name: Template config file for unipager
+- name: Template config file for Unipager
   ansible.builtin.template:
     src: config.json.j2
     dest: /var/lib/unipager/config.json
